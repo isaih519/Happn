@@ -20,6 +20,9 @@ const replySchema = new Schema({
 
 // do i need to add a user for who posted it??????? how would i do that
 const postSchema = ({
+    user: {
+        
+    },
     title: {
         type: String,
         required: true
@@ -28,12 +31,11 @@ const postSchema = ({
         type: String,
         required: true
     },
-    data: Buffer,
-    contentType: String,
 
     replies: [replySchema]
-}, {
-    timestamps: true
-})
+    }, {
+        timestamps: true
+    }
+);
 
 const Post = mongoose.model('Post', postSchema)
