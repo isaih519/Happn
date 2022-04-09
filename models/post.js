@@ -13,7 +13,6 @@ const replySchema = new Schema({
     userName: String,
 })
 
-// do i need to add a user for who posted it??????? how would i do that
 const postSchema = new Schema ({
     user: {
         type: String,
@@ -27,7 +26,6 @@ const postSchema = new Schema ({
         type: String,
         required: true
     },
-
     replies: [replySchema]
 }, {
     timestamps: true
