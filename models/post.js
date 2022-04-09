@@ -1,12 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const replySchema = new Schema({
-    like: {
-        type: Boolean,
-        required: true
-    },
     content: {
       type: String,
       required: true
@@ -19,9 +14,10 @@ const replySchema = new Schema({
 })
 
 // do i need to add a user for who posted it??????? how would i do that
-const postSchema = ({
+const postSchema = new Schema ({
     user: {
-        
+        type: String,
+        required: true
     },
     title: {
         type: String,
@@ -33,9 +29,8 @@ const postSchema = ({
     },
 
     replies: [replySchema]
-    }, {
-        timestamps: true
-    }
-);
+}, {
+    timestamps: true
+});
 
-const Post = mongoose.model('Post', postSchema)
+module.exports = mongoose.model('Post', postSchema)

@@ -1,36 +1,55 @@
-const Post = require('../models/post')
+var Post = require('../models/post')
 
 module.exports = {
+    index,
+    new: newPost,
     create,
-    delete: deleteReply
+    show,
+    edit,
+    update
+}
+
+function index(req, res) {
+    Post.find({}, function(err, posts) {
+        res.render('posts/index', {posts})
+    });
+};
+
+function newPost(req, res) {
+    res.render('posts/new', {title: 'Add Happn'})
 }
 
 function create(req, res) {
-    Post.findById(req.params.id, function(err, post) {
-        console.log(req.user)
-        req.body.user = req.user._id
-        req.body.userName = req.user.name
-        post.replies.push(req.body)
-        post.save(function(err) {
-            res.redirect(`/posts/${post._id}`)
-        })
+    var obj = {
+        userName: req.body.userName,
+        title: req.body.title,
+        content: req.body.content,
+    }
+    Post.create(obj, (err, posts) => {
+        if(err) {
+            return res.redirect('/posts/new')
+        } else {
+            posts.save();
+            res.redirect('/posts');
+        }
     })
-}
+};
 
-function deleteReply(req, res, next) {
-    Post.findOne({'replies._id': req.params.id})
-    .then(function(post) {
-        console.log(req.params.id)
-        const reply = post.replies.id(req.params.id)
-        console.log(reply)
-        if (!reply.user.equals(req.user._id))
-        return res.redirect(`/posts/${post._id}`)
-        reply.remove()
-        post.save()
-        .then(function() {
-            res.redirect(`/posts/${post._id}`)
-        }).catch(function(err) {
-            return next(err)
-        })
+function show(req, res) {
+    Post.findById(req.params.id, function(err, post) {
+        res.render('posts/show', {title: post.name, post})
     })
-}
+};
+
+function edit(req, res) {
+    const post = {id: req.params.id}
+    res.render('posts/edit', {post})
+};
+
+function update(req, res) {
+    Post.findOneAndUpdate({_id: req.params.id}, req.body, {new: true} , function(err, post) {
+        if (err)
+            return res.redirect('/posts/edit')
+            res.redirect(`/posts/${post._id}`)
+    });
+};

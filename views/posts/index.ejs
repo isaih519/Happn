@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='/stylesheets/create.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
-    <title>Add Shinobi</title>
+    <title>Make it Happn</title>
 </head>
 <body>
     <nav>
         <a href="/">Happn</a>
         <a href="/posts">What's Happned</a>
         <a href="/posts/new">What's Happnin'</a>
-        <% if (user) { %>
+        <% if (posts) { %>
         <a href="/logout">LOG OUT</a>
         <% } else { %>
         <a href="/auth/google" class="login">LOG IN&nbsp;<img src="https://i.imgur.com/FHjYyi0.png"></a>
         <% } %>
     </nav>
-    <h1>What's Happnin</h1>
-    <form action="/posts" method="POST" enctype="multipart/form-data">
-        <label>Title</label>
-        <input type="text" name="title">
-        <label>Happn:</label>
-        <input type="text" name="content">
-        <button id='add' type="submit">Make it Happn</button>
-    </form>
+    <h1>HAPPNs</h1>
+    <section id="images">
+        <% posts.forEach(function(s) { %>
+            <div class="box"> 
+            <% if (p.data) { %>
+                <a href="posts/<%=p._id%>">
+                        <img src="data:image/<%=p.contentType%>;base64, <%=s.data.toString('base64')%>"  width="300" height="200">        
+            <% } %>
+                </a>
+            </div>
+        <% }) %>
+    </section>   
+    </div>
 </body>
 </html>
